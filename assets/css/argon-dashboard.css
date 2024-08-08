@@ -353,6 +353,11 @@ caption {
   text-align: left;
 }
 
+.rounded-map {
+  border-radius: 5px; 
+  overflow: hidden;
+}
+
 th {
   text-align: inherit;
   text-align: -webkit-match-parent;

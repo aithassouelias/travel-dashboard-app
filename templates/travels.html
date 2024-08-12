@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% block title %} Mes voyages {% endblock %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <a href="#" class="btn btn-primary" id="addTripBtn">Ajouter un voyage</a>
+  </div>
+
+  <div class="container">
+    <div id="tripForm" class="card" style="display: none;">
+      <div class="card-body">
+        <h5 class="card-title">Ajouter un nouveau voyage</h5>
+        <form>
+          <div class="mb-3">
+            <label for="tripTitle" class="form-label">Titre du voyage</label>
+            <input type="text" class="form-control" id="tripTitle" placeholder="Ex: Paris, France">
+          </div>
+          <div class="mb-3">
+            <label for="tripCountry" class="form-label">Pays</label>
+            <input type="text" class="form-control" id="tripCountry" placeholder="Ex: France">
+          </div>
+          <div class="mb-3">
+            <label for="tripDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="tripDate">
+          </div>
+          <div class="mb-3">
+            <label for="tripImage" class="form-label">Image de la destination</label>
+            <input type="file" class="form-control" id="tripImage">
+          </div>
+          <button type="submit" class="btn btn-primary">Enregistrer le voyage</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Card for Paris -->
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-img-top">
+          <img src="../static/images/destinations/Paris.jpg" class="img-fluid border-radius-lg" alt="Paris">
+        </div>
+        <div class="card-body text-center">
+          <!-- City & Flag of the Country -->
+          <h5 class="card-title d-flex justify-content-center align-items-center">
+            Paris
+            <img src="../static/images/flags/france.png" alt="France" style="width: 20px; height: 20px; margin-left: 10px;">
+          </h5>
+          <!--Details button -->
+          <a href="{{ url_for('travel_details') }}" class="btn btn-primary">Voir les détails</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card for Bordeaux -->
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-img-top">
+          <img src="../static/images/destinations/Bordeaux.jpg" class="img-fluid border-radius-lg card-img-top" alt="Bordeaux">
+        </div>
+        <div class="card-body text-center">
+          <!-- City & Flag of the Country -->
+          <h5 class="card-title d-flex justify-content-center align-items-center">
+            Bordeaux
+            <img src="../static/images/flags/france.png" alt="France" style="width: 20px; height: 20px; margin-left: 10px;">
+          </h5>
+          <a href="#" class="btn btn-primary">Voir les détails</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card for Monaco -->
+    <div class="col-lg-4 mb-4">
+    <div class="card">
+      <div class="card-img-top">
+        <img src="../static/images/destinations/Marrakech.jpg" class="img-fluid border-radius-lg" alt="Marrakech">
+      </div>
+      <div class="card-body text-center">
+        <!-- City & Flag of the Country -->
+        <h5 class="card-title d-flex justify-content-center align-items-center">
+          Marrakech
+          <img src="../static/images/flags/morocco.png" alt="Morocco" style="width: 20px; height: 20px; margin-left: 10px;">
+        </h5>
+        <a href="#" class="btn btn-primary">Voir les détails</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}    
+      
+ 

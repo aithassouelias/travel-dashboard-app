@@ -23,38 +23,42 @@ for location in locations:
 m.save('map.html')
 
 
-# Liste des points d'intérêt à Paris avec leur nom et coordonnées GPS
-locations = [
-    ("Tour Eiffel", [48.8584, 2.2945]),
-    ("Musée du Louvre", [48.8606, 2.3376]),
-    ("Cathédrale Notre-Dame", [48.8529, 2.3500]),
-    ("Montmartre - Sacré-Cœur", [48.8867, 2.3431]),
-    ("Arc de Triomphe", [48.8738, 2.2950])
-]
+import openrouteservice
+from openrouteservice import convert
 
-# Extraire les coordonnées de chaque lieu
-coordinates = [loc[1] for loc in locations]
+# Remplace par ta propre clé API OpenRouteService
+client = openrouteservice.Client(key='5b3ce3597851110001cf624859eadc08586440cca8901585be5744ea')
 
-# Calculer les limites géographiques des points
-bounds = [[min(lat for lat, lon in coordinates), min(lon for lat, lon in coordinates)],
-          [max(lat for lat, lon in coordinates), max(lon for lat, lon in coordinates)]]
+# Définir deux points pour un test simple (Tour Eiffel -> Musée du Louvre)
+start = [2.2945, 48.8584]  # Tour Eiffel
+end = [2.3376, 48.8606]  # Musée du Louvre
 
-# Créer la carte avec le fond souhaité
-map_details = folium.Map(tiles='cartodbdark_matter')
+# Calculer l'itinéraire entre ces deux points
+try:
+    route = client.directions(coordinates=[start, end], profile='foot-walking', format='geojson')
+    print(route)  # Affiche la réponse de l'API pour diagnostic
+except openrouteservice.exceptions.ApiError as e:
+    print(f"API Error: {e}")
+except Exception as e:
+    print(f"Unexpected Error: {e}")
 
-# Ajouter des marqueurs pour chaque point d'intérêt
-for location in locations: 
-    folium.Marker(
-        location=location[1],
-        popup=location[0],
-        icon=folium.Icon(icon="glyphicon glyphicon-heart", color="black", icon_color="#FFD700"),
-    ).add_to(map_details)
+# Si la réponse contient bien 'routes', continuer
+if 'routes' in route:
+    # Décoder l'itinéraire pour folium
+    geometry = route['routes'][0]['geometry']
+    route_coords = convert.decode_polyline(geometry)
 
-# Ajuster le zoom et le centrage de la carte pour inclure tous les points
-map_details.fit_bounds(bounds)
+    # Créer la carte
+    map_details = folium.Map(location=[48.8584, 2.2945], zoom_start=13, tiles='cartodbdark_matter')
 
-# Optionnel: ajuster manuellement le zoom si nécessaire
-map_details.options['zoom'] = 15  # Exemple: augmenter le zoom pour cadrer de plus près
+    # Ajouter des marqueurs pour les deux points
+    folium.Marker(location=[48.8584, 2.2945], popup='Tour Eiffel').add_to(map_details)
+    folium.Marker(location=[48.8606, 2.3376], popup='Musée du Louvre').add_to(map_details)
 
-# Enregistrer la carte en tant que fichier HTML
-map_details.save('map_details.html')
+    # Tracer l'itinéraire
+    folium.PolyLine(route_coords['coordinates'], color="blue", weight=5, opacity=0.7).add_to(map_details)
+
+    # Enregistrer la carte
+    map_details.save('map_details.html')
+else:
+    print("No routes found in API response.")

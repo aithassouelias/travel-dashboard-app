@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8b51ca754544183ef78107394d0ace6a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_8b51ca754544183ef78107394d0ace6a" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8b51ca754544183ef78107394d0ace6a = L.map(
+                "map_8b51ca754544183ef78107394d0ace6a",
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 1,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_4c6aea3a22eb786be284dcbb560db719 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+        
+    
+            tile_layer_4c6aea3a22eb786be284dcbb560db719.addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var marker_b800945b61a488da6e1d72134ea29e23 = L.marker(
+                [48.8584, 2.2945],
+                {}
+            ).addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var icon_a1636766ab3085a99831f807243b93e2 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "glyphicon glyphicon-heart", "iconColor": "#FFD700", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_b800945b61a488da6e1d72134ea29e23.setIcon(icon_a1636766ab3085a99831f807243b93e2);
+        
+    
+        var popup_2164a56add2ce929376ce1b2442ffe4d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1dc0622ed0d7247c70673dfb2e716b9f = $(`<div id="html_1dc0622ed0d7247c70673dfb2e716b9f" style="width: 100.0%; height: 100.0%;">Tour Eiffel, Paris</div>`)[0];
+                popup_2164a56add2ce929376ce1b2442ffe4d.setContent(html_1dc0622ed0d7247c70673dfb2e716b9f);
+            
+        
+
+        marker_b800945b61a488da6e1d72134ea29e23.bindPopup(popup_2164a56add2ce929376ce1b2442ffe4d)
+        ;
+
+        
+    
+    
+            var marker_cf595a26f94c72440318cdbaa40332ea = L.marker(
+                [51.5074, -0.1278],
+                {}
+            ).addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var icon_223cb5e346c54923a61ad44da3da39a0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "glyphicon glyphicon-heart", "iconColor": "#FFD700", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_cf595a26f94c72440318cdbaa40332ea.setIcon(icon_223cb5e346c54923a61ad44da3da39a0);
+        
+    
+        var popup_d4b8edaa8d42c7b6b8a30319b91ce7ee = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7a695873df814d0a7eeb5d84082f4566 = $(`<div id="html_7a695873df814d0a7eeb5d84082f4566" style="width: 100.0%; height: 100.0%;">Londres</div>`)[0];
+                popup_d4b8edaa8d42c7b6b8a30319b91ce7ee.setContent(html_7a695873df814d0a7eeb5d84082f4566);
+            
+        
+
+        marker_cf595a26f94c72440318cdbaa40332ea.bindPopup(popup_d4b8edaa8d42c7b6b8a30319b91ce7ee)
+        ;
+
+        
+    
+    
+            var marker_ed52c26b67084578e95202da76794d5d = L.marker(
+                [31.6295, -7.9811],
+                {}
+            ).addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var icon_73d8fe68f453a6253812619bfc05dc74 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "glyphicon glyphicon-heart", "iconColor": "#FFD700", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_ed52c26b67084578e95202da76794d5d.setIcon(icon_73d8fe68f453a6253812619bfc05dc74);
+        
+    
+        var popup_2aeeb7662648c7aa1521ead2edabb429 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ebd13e25bd758224cfffb29383d49921 = $(`<div id="html_ebd13e25bd758224cfffb29383d49921" style="width: 100.0%; height: 100.0%;">Marrakech</div>`)[0];
+                popup_2aeeb7662648c7aa1521ead2edabb429.setContent(html_ebd13e25bd758224cfffb29383d49921);
+            
+        
+
+        marker_ed52c26b67084578e95202da76794d5d.bindPopup(popup_2aeeb7662648c7aa1521ead2edabb429)
+        ;
+
+        
+    
+    
+            var marker_68f8b7137cf14bd1abfa18ec52123e25 = L.marker(
+                [43.2699, 5.3958],
+                {}
+            ).addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var icon_171dddd37939df5cca57e9571739b8bc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "glyphicon glyphicon-heart", "iconColor": "#FFD700", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_68f8b7137cf14bd1abfa18ec52123e25.setIcon(icon_171dddd37939df5cca57e9571739b8bc);
+        
+    
+        var popup_4571a9adf52e7c46fb07d8e4a159626f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cf298e02dbcc823603b24d089fcefa31 = $(`<div id="html_cf298e02dbcc823603b24d089fcefa31" style="width: 100.0%; height: 100.0%;">Stade Vélodrome, Marseille</div>`)[0];
+                popup_4571a9adf52e7c46fb07d8e4a159626f.setContent(html_cf298e02dbcc823603b24d089fcefa31);
+            
+        
+
+        marker_68f8b7137cf14bd1abfa18ec52123e25.bindPopup(popup_4571a9adf52e7c46fb07d8e4a159626f)
+        ;
+
+        
+    
+    
+            var marker_d9a91f4599b2e0038195f5ed34addb3e = L.marker(
+                [44.8378, -0.5792],
+                {}
+            ).addTo(map_8b51ca754544183ef78107394d0ace6a);
+        
+    
+            var icon_13325390c1b2e0dc216bc6f507ad6976 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "glyphicon glyphicon-heart", "iconColor": "#FFD700", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_d9a91f4599b2e0038195f5ed34addb3e.setIcon(icon_13325390c1b2e0dc216bc6f507ad6976);
+        
+    
+        var popup_11bea882e86bd42c118370724b24f3f5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_64a12e0c5bc75013284b027b59f1dadb = $(`<div id="html_64a12e0c5bc75013284b027b59f1dadb" style="width: 100.0%; height: 100.0%;">Bordeaux</div>`)[0];
+                popup_11bea882e86bd42c118370724b24f3f5.setContent(html_64a12e0c5bc75013284b027b59f1dadb);
+            
+        
+
+        marker_d9a91f4599b2e0038195f5ed34addb3e.bindPopup(popup_11bea882e86bd42c118370724b24f3f5)
+        ;
+
+        
+    
+</script>
+</html>

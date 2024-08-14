@@ -30,8 +30,9 @@ from openrouteservice import convert
 client = openrouteservice.Client(key='5b3ce3597851110001cf624859eadc08586440cca8901585be5744ea')
 
 # Définir deux points pour un test simple (Tour Eiffel -> Musée du Louvre)
-start = [2.2945, 48.8584]  # Tour Eiffel
-end = [2.3376, 48.8606]  # Musée du Louvre
+start = [6.1751, 49.1193]  # Metz
+end = [-6.9147, 30.9280]   # Ouarzazate
+
 
 # Calculer l'itinéraire entre ces deux points
 try:

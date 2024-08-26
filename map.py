@@ -1,7 +1,7 @@
 import folium
 
-# Créer une carte centrée sur une latitude et une longitude spécifiques
-m = folium.Map(zoom_start=13, tiles='cartodbdark_matter')
+# Créer une carte sans spécifier de coordonnées initiales
+m = folium.Map(zoom_start=4, tiles='cartodbdark_matter')
 
 locations = [
     ("Tour Eiffel, Paris", [48.8584, 2.2945]),
@@ -11,55 +11,39 @@ locations = [
     ("Bordeaux", [44.8378, -0.5792])
 ]
 
-for location in locations: 
-    # Ajouter un marqueur
+# Extraire les coordonnées de toutes les localisations
+coordinates = [loc[1] for loc in locations]
+
+# Ajouter les marqueurs à la carte
+for i, location in enumerate(locations):
     folium.Marker(
         location=location[1],
         popup=location[0],
-        icon=folium.Icon(icon="glyphicon glyphicon-heart", color="black", icon_color="#FFD700"),
+        icon=folium.DivIcon(html=f"""
+            <div style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background-color: black;
+                color: gold;
+                font-weight: bold;
+                font-size: 14px;">
+                {i + 1}
+            </div>
+        """)
     ).add_to(m)
+
+# Calculer les limites (bounds) pour ajuster automatiquement la carte
+bounds = [
+    [min(lat for lat, lon in coordinates), min(lon for lat, lon in coordinates)],
+    [max(lat for lat, lon in coordinates), max(lon for lat, lon in coordinates)]
+]
+
+# Ajuster la carte pour qu'elle corresponde aux limites des marqueurs
+m.fit_bounds(bounds)
 
 # Enregistrer la carte en tant que fichier HTML
 m.save('map.html')
-
-
-import openrouteservice
-from openrouteservice import convert
-
-# Remplace par ta propre clé API OpenRouteService
-client = openrouteservice.Client(key='5b3ce3597851110001cf624859eadc08586440cca8901585be5744ea')
-
-# Définir deux points pour un test simple (Tour Eiffel -> Musée du Louvre)
-start = [6.1751, 49.1193]  # Metz
-end = [-6.9147, 30.9280]   # Ouarzazate
-
-
-# Calculer l'itinéraire entre ces deux points
-try:
-    route = client.directions(coordinates=[start, end], profile='foot-walking', format='geojson')
-    print(route)  # Affiche la réponse de l'API pour diagnostic
-except openrouteservice.exceptions.ApiError as e:
-    print(f"API Error: {e}")
-except Exception as e:
-    print(f"Unexpected Error: {e}")
-
-# Si la réponse contient bien 'routes', continuer
-if 'routes' in route:
-    # Décoder l'itinéraire pour folium
-    geometry = route['routes'][0]['geometry']
-    route_coords = convert.decode_polyline(geometry)
-
-    # Créer la carte
-    map_details = folium.Map(location=[48.8584, 2.2945], zoom_start=13, tiles='cartodbdark_matter')
-
-    # Ajouter des marqueurs pour les deux points
-    folium.Marker(location=[48.8584, 2.2945], popup='Tour Eiffel').add_to(map_details)
-    folium.Marker(location=[48.8606, 2.3376], popup='Musée du Louvre').add_to(map_details)
-
-    # Tracer l'itinéraire
-    folium.PolyLine(route_coords['coordinates'], color="blue", weight=5, opacity=0.7).add_to(map_details)
-
-    # Enregistrer la carte
-    map_details.save('map_details.html')
-else:
-    print("No routes found in API response.")

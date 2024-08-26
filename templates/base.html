@@ -19,6 +19,31 @@
   <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('#dataTable').DataTable({
+              "paging": true,
+              "pageLength": 5,
+              "searching": false,
+              "info": false,
+              "lengthChange": false,
+              "responsive": true,
+              "language": {
+                  "url": "//cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+              },
+              "autoWidth": false
+          });
+      });
+  </script>
 </head>
 
 
@@ -208,11 +233,11 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="./assets/js/core/popper.min.js"></script>
-  <script src="./assets/js/core/bootstrap.min.js"></script>
-  <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <script src="../static/js/core/popper.min.js"></script>
+  <script src="../static/js/core/bootstrap.min.js"></script>
+  <script src="../static/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../static/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="../static/js/plugins/chartjs.min.js"></script>
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
@@ -332,7 +357,7 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="./assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+  <script src="../static/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
 
 </html>

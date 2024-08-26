@@ -16,9 +16,12 @@ def create_map_with_multiple_routes(pois, api_key):
 
     total_distance = 0
 
-    # Create a folium map centered at the first POI
+    # Create a folium map centered at the first POI (temporary center)
     start_coords = pois_sorted[0]['coords']
     m = folium.Map(location=start_coords, zoom_start=6, tiles='cartodbdark_matter')
+
+    # List to collect all coordinates for fitting the map bounds
+    all_coords = []
 
     # Iterate over POIs to create routes between consecutive points
     for i in range(len(pois_sorted) - 1):
@@ -40,6 +43,10 @@ def create_map_with_multiple_routes(pois, api_key):
 
                 # Add the route to the map
                 folium.PolyLine(locations=[(coord[1], coord[0]) for coord in coordinates], color="#FFD700", weight=2.5, opacity=1, smooth_factor=3).add_to(m)
+
+                # Add the start and end coordinates to the list for fitting bounds
+                all_coords.append([start_coords[1], start_coords[0]])
+                all_coords.append([end_coords[1], end_coords[0]])
 
                 # Add markers for start and end points with custom circle icons and numbered labels
                 folium.Marker(
@@ -87,6 +94,9 @@ def create_map_with_multiple_routes(pois, api_key):
 
         except openrouteservice.exceptions.ApiError as e:
             print(f"API error: {e}")
+
+    # Adjust the map to fit all the points and routes
+    m.fit_bounds(all_coords)
 
     # Save the map to an HTML file
     m.save('./static/route_map.html')

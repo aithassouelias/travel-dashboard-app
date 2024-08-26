@@ -26939,3 +26939,45 @@ pre[class*="language-"] {
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
+
+/* DATA TABLES */
+.card {
+  overflow: hidden; /* Évite le débordement */
+}
+
+#dataTable {
+  width: 100% !important;
+}
+
+.table-responsive {
+  overflow-x: auto; /* Permet le défilement horizontal si nécessaire */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.25rem 0.5rem; /* Ajustez ce padding selon vos besoins */
+}
+
+.dataTables_wrapper .dataTables_info {
+  margin-top: 0.5rem; /* Ajustez ce margin-top selon vos besoins */
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  font-size: 0.875rem; /* Taille du texte du champ de recherche */
+}
+
+.dataTables_wrapper .dataTables_length select {
+  font-size: 0.875rem; /* Taille du texte pour le choix du nombre d'enregistrements */
+}
+
+.dataTables_wrapper .dataTables_info {
+  font-size: 0.875rem; /* Taille du texte des informations */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  font-size: 0.875rem; /* Taille du texte des boutons de pagination */
+}
+
+.badge {
+  font-size: 0.75rem; /* Ajustez la taille du texte des badges */
+  padding: 0.25rem 0.5rem; /* Ajustez le padding des badges */
+}

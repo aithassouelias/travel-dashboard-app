@@ -1,7 +1,5 @@
 import folium
 import openrouteservice
-from openrouteservice import convert
-import json
 from datetime import datetime
 
 # Function to create a map with routes between multiple points, sorted by date and time
@@ -43,17 +41,45 @@ def create_map_with_multiple_routes(pois, api_key):
                 # Add the route to the map
                 folium.PolyLine(locations=[(coord[1], coord[0]) for coord in coordinates], color="#FFD700", weight=2.5, opacity=1, smooth_factor=3).add_to(m)
 
-                # Add markers for start and end points with custom icons
+                # Add markers for start and end points with custom circle icons and numbered labels
                 folium.Marker(
                     location=[start_coords[1], start_coords[0]],
                     popup=f"{pois_sorted[i]['name']}<br>{pois_sorted[i]['date_time'].strftime('%Y-%m-%d %H:%M')}",
-                    icon=folium.Icon(icon="glyphicon glyphicon-heart", color="black", icon_color="#FFD700")
+                    icon=folium.DivIcon(html=f"""
+                        <div style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            background-color: black;
+                            color: gold;
+                            font-weight: bold;
+                            font-size: 14px;">
+                            {i + 1}
+                        </div>
+                    """)
                 ).add_to(m)
 
                 folium.Marker(
                     location=[end_coords[1], end_coords[0]],
                     popup=f"{pois_sorted[i + 1]['name']}<br>{pois_sorted[i + 1]['date_time'].strftime('%Y-%m-%d %H:%M')}",
-                    icon=folium.Icon(icon="glyphicon glyphicon-heart", color="black", icon_color="#FFD700")
+                    icon=folium.DivIcon(html=f"""
+                        <div style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            background-color: black;
+                            color: gold;
+                            font-weight: bold;
+                            font-size: 14px;">
+                            {i + 2}
+                        </div>
+                    """)
                 ).add_to(m)
 
             else:

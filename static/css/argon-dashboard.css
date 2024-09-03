@@ -26977,6 +26977,14 @@ pre[class*="language-"] {
   font-size: 0.875rem; /* Taille du texte des boutons de pagination */
 }
 
+/*CARDS PAGE TRAVELS */
+.card-img-top img {
+  height: 200px; /* Fixe la hauteur de l'image */
+  object-fit: cover; /* Assure que l'image couvre toute la zone tout en gardant le ratio */
+  width: 100%; /* Assure que l'image prend toute la largeur de la carte */
+}
+
+
 .badge {
   font-size: 0.75rem; /* Ajustez la taille du texte des badges */
   padding: 0.25rem 0.5rem; /* Ajustez le padding des badges */

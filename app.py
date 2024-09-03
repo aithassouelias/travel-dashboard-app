@@ -1,9 +1,19 @@
 from flask import Flask, render_template
+import pandas as pd
+
 app = Flask(__name__)
+
+users_df = pd.read_json("./static/data/users.json")
+travels_df = pd.read_json("./static/data/travels.json")
+places_visited_df = pd.read_json("./static/data/place_visited.json")
+hotels_df = pd.read_json("./static/data/hotels.json")
 
 @app.route('/')
 def dashboard():
-    return render_template('dashboard.html')
+    # Number of unique visited cities
+    visited_cities = travels_df['destination'].nunique()
+    
+    return render_template('dashboard.html', visited_cities=visited_cities)
 
 @app.route('/travels')
 def travels():
@@ -19,7 +29,7 @@ def profile():
 
 @app.route('/friends')
 def friends():
-    return render_template('tables.html')
+    return render_template('friends.html')
 
 if __name__ == '__main__':
-   app.run()
+   app.run(debug=True)

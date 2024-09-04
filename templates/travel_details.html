@@ -3,6 +3,8 @@
 {% block body %}
 
 <!-- KPI -->
+
+
 <div class="container-fluid py-3">
 
   <div class="row mt-4">
@@ -100,7 +102,48 @@
 
   <div class="col-lg-7 mb-lg-0 mb-4">
     <div class="card z-index-2 h-100">
-      <div class="card-body px-0 pt-0 pb-2">
+      <div class="card-header d-flex justify-content-between align-items-center p-2">
+        <h6 class="mb-0" style="font-size: 14px;">Liste des Lieux</h6>
+        <button class="btn btn-outline-primary btn-sm" id="addLocationBtn" style="font-size: 12px;">
+          <i class="fas fa-plus"></i> Ajouter un lieu
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addLocationModalLabel">Ajouter un lieu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Formulaire d'ajout de lieu -->
+              <form id="addLocationForm">
+                <div class="mb-3">
+                  <label for="locationName" class="form-label">Nom du lieu</label>
+                  <input type="text" class="form-control" id="locationName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="locationDate" class="form-label">Date</label>
+                  <input type="datetime-local" class="form-control" id="locationDate" required>
+                </div>
+                <div class="mb-3">
+                  <label for="locationStatus" class="form-label">Statut</label>
+                  <select class="form-select" id="locationStatus" required>
+                    <option value="visited">Visité</option>
+                    <option value="to-visit">À visiter</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card-body px-0 pt-0 pb-2" >
         <div class="table-responsive p-0">
           <table id="dataTable" class="table align-items-center mb-0">
             <thead>
@@ -108,6 +151,7 @@
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lieux</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Statut</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
               </tr>
             </thead>
             <tbody>
@@ -129,6 +173,22 @@
                 <td class="align-middle text-center text-sm">
                   <span class="badge badge-sm bg-gradient-success">Visité</span>
                 </td>
+
+                <td class="text-end">
+                  <div class="action-menu">
+                    <button class="btn btn-link text-secondary p-0 action-trigger">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">
+                        <i class="fas fa-pencil-alt me-2"></i> Modifier
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="fas fa-trash me-2"></i> Supprimer
+                      </a>
+                    </div>
+                  </div>
+                </td>
               </tr>
               <!-- Ligne 2 -->
               <tr>
@@ -147,6 +207,22 @@
 
                 <td class="align-middle text-center text-sm">
                   <span class="badge badge-sm bg-gradient-warning">À visiter</span>
+                </td>
+
+                <td class="text-end">
+                  <div class="action-menu">
+                    <button class="btn btn-link text-secondary p-0 action-trigger">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">
+                        <i class="fas fa-pencil-alt me-2"></i> Modifier
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="fas fa-trash me-2"></i> Supprimer
+                      </a>
+                    </div>
+                  </div>
                 </td>
               </tr>
               
@@ -168,45 +244,21 @@
                 <td class="align-middle text-center text-sm">
                   <span class="badge badge-sm bg-gradient-success">Visité</span>
                 </td>
-              </tr>
 
-              <!-- Ligne 1 -->
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Tour Eiffel</h6>
-                      <p class="text-xs text-secondary mb-0">Paris, France</p>
+                <td class="text-end">
+                  <div class="action-menu">
+                    <button class="btn btn-link text-secondary p-0 action-trigger">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">
+                        <i class="fas fa-pencil-alt me-2"></i> Modifier
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="fas fa-trash me-2"></i> Supprimer
+                      </a>
                     </div>
                   </div>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">24/07/2024 - 17:00</h6>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm bg-gradient-success">Visité</span>
-                </td>
-              </tr>
-
-              <!-- Ligne 1 -->
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Tour Eiffel</h6>
-                      <p class="text-xs text-secondary mb-0">Paris, France</p>
-                    </div>
-                  </div>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">24/07/2024 - 17:00</h6>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm bg-gradient-success">Visité</span>
                 </td>
               </tr>
 
@@ -228,65 +280,21 @@
                 <td class="align-middle text-center text-sm">
                   <span class="badge badge-sm bg-gradient-success">Visité</span>
                 </td>
-              </tr>
 
-              <!-- Ligne 1 -->
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Tour Eiffel</h6>
-                      <p class="text-xs text-secondary mb-0">Paris, France</p>
+                <td class="text-end">
+                  <div class="action-menu">
+                    <button class="btn btn-link text-secondary p-0 action-trigger">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">
+                        <i class="fas fa-pencil-alt me-2"></i> Modifier
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="fas fa-trash me-2"></i> Supprimer
+                      </a>
                     </div>
                   </div>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">24/07/2024 - 17:00</h6>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm bg-gradient-success">Visité</span>
-                </td>
-              </tr>
-
-              <!-- Ligne 1 -->
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Tour Eiffel</h6>
-                      <p class="text-xs text-secondary mb-0">Paris, France</p>
-                    </div>
-                  </div>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">24/07/2024 - 17:00</h6>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm bg-gradient-success">Visité</span>
-                </td>
-              </tr>
-
-              <!-- Ligne 1 -->
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Tour Eiffel</h6>
-                      <p class="text-xs text-secondary mb-0">Paris, France</p>
-                    </div>
-                  </div>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">24/07/2024 - 17:00</h6>
-                </td>
-
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm bg-gradient-success">Visité</span>
                 </td>
               </tr>
             </tbody>
@@ -298,6 +306,49 @@
   
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const actionMenus = document.querySelectorAll('.action-menu');
+
+    actionMenus.forEach(menu => {
+      const trigger = menu.querySelector('.action-trigger');
+      const dropdown = menu.querySelector('.dropdown-menu');
+
+      // Lors du clic sur les trois points
+      trigger.addEventListener('click', function(event) {
+        event.stopPropagation(); // Empêche la fermeture immédiate
+        closeAllDropdowns(); // Ferme les autres menus ouverts
+        menu.classList.toggle('show'); // Ouvre/ferme le menu
+
+        // Ajustement de la position si le menu déborde de la carte
+        const menuRect = dropdown.getBoundingClientRect();
+        const cardRect = menu.closest('.card').getBoundingClientRect();
+
+        // Si le menu sort de la carte par la droite, on le réajuste
+        if (menuRect.right > cardRect.right) {
+          dropdown.style.left = 'auto';
+          dropdown.style.right = '0'; // On l'aligne à droite
+        }
+
+        // Si le menu sort par le bas, on l'affiche au-dessus du bouton
+        if (menuRect.bottom > cardRect.bottom) {
+          dropdown.style.top = 'auto';
+          dropdown.style.bottom = '100%'; // S'affiche au-dessus
+        }
+      });
+
+      // Fermer les menus quand on clique ailleurs
+      document.addEventListener('click', function() {
+        closeAllDropdowns();
+      });
+
+      function closeAllDropdowns() {
+        actionMenus.forEach(m => m.classList.remove('show'));
+      }
+    });
+  });
+
+</script>
 <!-- End charts -->
 
 {% endblock %}

@@ -13,7 +13,7 @@ def create_map_with_multiple_routes(pois, api_key):
 
     # Sort POIs by date and time
     pois_sorted = sorted(pois, key=lambda x: x['date_time'])
-
+    print(pois_sorted)
     total_distance = 0
 
     # Create a folium map centered at the first POI (temporary center)
@@ -101,21 +101,3 @@ def create_map_with_multiple_routes(pois, api_key):
     # Save the map to an HTML file
     m.save('./static/route_map.html')
 
-    # Print the total distance in kilometers
-    print(f"Total distance between the points: {total_distance:.2f} km")
-
-# Example usage
-pois = [
-    {'name': 'Tour Eiffel', 'coords': (2.2945, 48.8584), 'date_time': '2024-08-13 10:00'},
-    {'name': 'Musée du Louvre', 'coords': (2.3376, 48.8606), 'date_time': '2024-08-13 14:00'},
-    {'name': 'Cathédrale Notre-Dame', 'coords': (2.3499, 48.8529), 'date_time': '2024-08-14 10:00'},
-    {'name': 'Champs-Élysées', 'coords': (2.3076, 48.8738), 'date_time': '2024-08-15 10:00'},
-    {'name': 'Montmartre', 'coords': (2.3430, 48.8867), 'date_time': '2024-08-15 16:00'},
-    {'name': 'Musée d\'Orsay', 'coords': (2.3250, 48.8599), 'date_time': '2024-08-16 10:00'},
-    {'name': 'Palais Garnier', 'coords': (2.3319, 48.8719), 'date_time': '2024-08-17 10:00'},
-    {'name': 'Jardin du Luxembourg', 'coords': (2.3372, 48.8462), 'date_time': '2024-08-18 10:00'}
-]
-
-api_key = '5b3ce3597851110001cf624859eadc08586440cca8901585be5744ea'  # Replace with your OpenRouteService API key
-
-create_map_with_multiple_routes(pois, api_key)

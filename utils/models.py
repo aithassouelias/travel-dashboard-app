@@ -2,6 +2,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class User(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
+    profile_picture = db.Column(db.String(100))
+    date_of_birth = db.Column(db.Date, nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    trips = db.relationship('Trip', backref='trip', lazy=True)
+
 class Trip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -13,6 +22,7 @@ class Trip(db.Model):
     destinations = db.relationship('Destination', backref='trip', lazy=True)
     # Relationship with POI
     pois = db.relationship('POI', backref='trip', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
 
 class POI(db.Model):
     id = db.Column(db.Integer, primary_key=True)

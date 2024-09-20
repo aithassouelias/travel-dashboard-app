@@ -1,9 +1,13 @@
 import folium
 import openrouteservice
 from datetime import datetime
+from io import BytesIO
+import requests
 
-# Function to create a map with routes between multiple points, sorted by date and time
-def create_map_with_multiple_routes(pois, api_key):
+def create_map_with_multiple_routes(pois : list, api_key : str):
+    """
+    Returns the HTML code of a folium map displaying POIs from POIs and api_key
+    """
     # Initialize the client with your API key
     client = openrouteservice.Client(key=api_key)
     
@@ -98,6 +102,63 @@ def create_map_with_multiple_routes(pois, api_key):
     # Adjust the map to fit all the points and routes
     m.fit_bounds(all_coords)
 
-    # Save the map to an HTML file
-    m.save('./static/route_map.html')
+   # Create a BytesIO object to hold the map HTML
+    map_io = BytesIO()
+    m.save(map_io, close_file=False)
+    map_html = map_io.getvalue().decode()
 
+    return map_html
+
+def create_empty_map():
+    """
+    Returns the HTML code of an empty Map
+    """
+    # Créer une carte sans spécifier de coordonnées initiales
+    m = folium.Map(zoom_start=4, tiles='cartodbdark_matter', min_zoom=3, max_bounds=True)
+
+    map_io = BytesIO()
+    m.save(map_io, close_file=False)
+    map_html = map_io.getvalue().decode()
+
+    return map_html
+
+def get_coordinates(place_name : str):
+    """
+    Returns latitude and longitude from a place name by calling OSM API
+    """
+    url = f"https://nominatim.openstreetmap.org/search?q={place_name}&format=json"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Referer": "http://www.yourwebsite.com",
+        "Accept-Language": "en-US,en;q=0.5"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if data:
+            latitude = float(data[0]['lat'])
+            longitude = float(data[0]['lon'])
+            return [latitude, longitude]
+        else:
+            return [None, None]
+    return [None, None]
+
+def get_location_info(lat : float, lon : float):
+    """
+    Returns Country & City names from latitude and longitude by calling OSM Reverse API
+    """
+    url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&zoom=10&addressdetails=1"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Referer": "http://www.yourwebsite.com",
+        "Accept-Language": "en-US,en;q=0.5"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        address = data.get('address', {})
+        city = address.get('city', address.get('town', address.get('village', '')))
+        country = address.get('country', '')
+        return [city, country]
+    else:
+        return [None, None]

@@ -56,7 +56,7 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <h5 class="font-weight-bolder">{{ total_pois }}</h5>
+                <h5 class="font-weight-bolder">{{  num_to_visit_pois }}</h5>
                 <p class="mb-0">lieux à visiter</p>
               </div>
             </div>
@@ -73,85 +73,88 @@
       </div>
     </div>
   </div>  
-</div>
 
-<!-- Map and POI Table Section -->
-<div class="row mt-4">
-  <!-- Map -->
-  <div class="col-lg-5 mb-lg-0 mb-4">
-    <div class="card z-index-2 h-100">
-      <div class="card-body p-0 h-100">
-        <iframe src="{{ url_for('static', filename='route_map.html') }}" width="100%" height="400px" frameborder="10" class="rounded-map" style="border-radius: 15px;"></iframe>
+
+  <!-- Map and POI Table Section -->
+  <div class="row mt-4">
+    <!-- Map -->
+    <div class="col-lg-5 mb-lg-0 mb-4">
+      <div class="card z-index-2 h-100">
+        <div class="card-body p-0 h-100" id="map">
+          <iframe width="100%" height="400px" frameborder="10" class="rounded-map" style="border-radius: 15px;">{{ map_html|safe }}</iframe>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- POI Table -->
-  <div class="col-lg-7 mb-lg-0 mb-4">
-    <div class="card z-index-2 h-100">
-      <div class="card-header d-flex justify-content-between align-items-center p-2">
-        <h6 class="mb-0" style="font-size: 14px;">Liste des Lieux</h6>
-        <button class="btn btn-outline-primary btn-sm" id="addLocationBtn" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#addLocationModal">
-          <i class="fas fa-plus"></i> Ajouter un lieu
-        </button>
-      </div>
+    <!-- POI Table -->
+    <div class="col-lg-7 mb-lg-0 mb-4">
+      <div class="card z-index-2 h-100">
+        <div class="card-header d-flex justify-content-between align-items-center p-2">
+          <h6 class="mb-0" style="font-size: 14px;">Liste des Lieux</h6>
+          <button class="btn btn-outline-primary btn-sm" id="addLocationBtn" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#addLocationModal">
+            <i class="fas fa-plus"></i> Ajouter un lieu
+          </button>
+        </div>
 
-      <div class="card-body px-0 pt-0 pb-2">
-        <div class="table-responsive p-0">
-          <table id="dataTable" class="table align-items-center mb-0">
-            <thead>
-              <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lieux</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Statut</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for poi in pois %}
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ poi.name }}</h6>
-                      <p class="text-xs text-secondary mb-0">{{ poi.latitude }}, {{ poi.longitude }}</p>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table id="dataTable" class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lieux</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Statut</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for poi in pois %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{ poi.name }}</h6>
+                        <p class="text-xs text-secondary mb-0">Monument</p>
+                      </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                <td class="align-middle text-center text-sm">
-                  <h6 class="mb-0 text-sm">{{ poi.visit_date.strftime('%d/%m/%Y - %H:%M') }}</h6>
-                </td>
+                  <td class="align-middle text-center text-sm">
+                    <h6 class="mb-0 text-sm">{{ poi.visit_date.strftime('%d/%m/%Y - %H:%M') }}</h6>
+                  </td>
 
-                <td class="align-middle text-center text-sm">
-                  <span class="badge badge-sm {% if poi.visited %}bg-gradient-success{% else %}bg-gradient-warning{% endif %}">
-                    {% if poi.visited %}Visité{% else %}À visiter{% endif %}
-                  </span>
-                </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm {% if poi.visited %}bg-gradient-success{% else %}bg-gradient-warning{% endif %}">
+                      {% if poi.visited %}Visité{% else %}À visiter{% endif %}
+                    </span>
+                  </td>
 
-                <td class="text-end">
-                  <div class="action-menu">
-                    <button class="btn btn-link text-secondary p-0 action-trigger">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">
-                        <i class="fas fa-pencil-alt me-2"></i> Modifier
-                      </a>
-                      <a class="dropdown-item text-danger" href="#">
-                        <i class="fas fa-trash me-2"></i> Supprimer
-                      </a>
+                  <td class="text-end">
+                    <div class="action-menu">
+                      <button class="btn btn-link text-secondary p-0 action-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">
+                          <i class="fas fa-pencil-alt me-2"></i> Modifier
+                        </a>
+                        <a class="dropdown-item text-danger" href="#">
+                          <i class="fas fa-trash me-2"></i> Supprimer
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+
   <!-- Modal for Adding POI -->
   <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -164,32 +167,22 @@
           <form id="addLocationForm" method="POST" action="{{ url_for('travel_details', trip_id=trip.id) }}">
             {{ form.hidden_tag() }}
             <div class="mb-3">
-              <label for="poiName" class="form-label">Nom du Lieu</label>
+              <label for="poiName" class="form-label">Lieu</label>
               {{ form.name(class="form-control", placeholder="Ex: Musée du Louvre") }}
             </div>
 
             <div class="mb-3">
-              <label for="latitude" class="form-label">Latitude</label>
-              {{ form.latitude(class="form-control", placeholder="Ex: Musée du Louvre") }}
+              <label for="visitDate" class="form-label">Date de visite</label>
+              {{ form.visit_date(class="form-control") }}
             </div>
 
             <div class="mb-3">
-              <label for="longitude" class="form-label">Longitude</label>
-              {{ form.longitude(class="form-control", placeholder="Ex: Musée du Louvre") }}
-            </div>
-
-            <div class="mb-3">
-              <label for="visitDate" class="form-label">Date de Visite</label>
-              {{ form.visit_date(class="form-control", placeholder="Ex: Musée du Louvre") }}
-            </div>
-
-            <div class="mb-3">
-              <label for="visited" class="form-label">Statut de Visite</label>
+              <label for="visited" class="form-label">Statut de visite</label>
               {{ form.visited(class="form-select", id="visited") }}
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
               <button type="submit" class="btn btn-primary">Ajouter</button>
             </div>
           </form>

@@ -27062,3 +27062,11 @@ tr:hover .action-trigger {
   background-color: #007bff;
   color: white;
 }
+
+#map {
+  height: 400px; /* Adjust the height of the map */
+  width: 100%;   /* Make the map full-width */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for a lifted effect */
+  margin-top: 20px; /* Space above the map */
+}

@@ -22,7 +22,7 @@ def create_map_with_multiple_routes(pois : list, api_key : str):
 
     # Create a folium map centered at the first POI (temporary center)
     start_coords = pois_sorted[0]['coords']
-    m = folium.Map(location=start_coords, zoom_start=6, tiles='cartodbdark_matter')
+    m = folium.Map(location=start_coords, zoom_start=6, tiles='cartodbdark_matter', width='100%', height='400px')
 
     # List to collect all coordinates for fitting the map bounds
     all_coords = []
@@ -103,10 +103,7 @@ def create_map_with_multiple_routes(pois : list, api_key : str):
     m.fit_bounds(all_coords)
 
    # Create a BytesIO object to hold the map HTML
-    map_io = BytesIO()
-    m.save(map_io, close_file=False)
-    map_html = map_io.getvalue().decode()
-
+    map_html = m._repr_html_()
     return map_html
 
 def create_empty_map():
@@ -147,7 +144,7 @@ def get_location_info(lat : float, lon : float):
     """
     Returns Country & City names from latitude and longitude by calling OSM Reverse API
     """
-    url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&zoom=10&addressdetails=1"
+    url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&zoom=18&addressdetails=1&accept-language=fr"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         "Referer": "http://www.yourwebsite.com",
@@ -159,6 +156,6 @@ def get_location_info(lat : float, lon : float):
         address = data.get('address', {})
         city = address.get('city', address.get('town', address.get('village', '')))
         country = address.get('country', '')
-        return [city, country]
+        return data
     else:
-        return [None, None]
+        return response

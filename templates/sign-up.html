@@ -29,7 +29,7 @@
         <nav class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
           <div class="container-fluid">
             <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="../pages/dashboard.html">
-              Argon Dashboard 2
+              SaveMyTravels
             </a>
             <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon mt-2">
@@ -80,7 +80,7 @@
   <main class="main-content  mt-0">
     <section>
       <div class="page-header min-vh-100">
-        <div class="container">
+        <div class="container pt-6">
           <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
               <div class="card card-plain">
@@ -131,13 +131,17 @@
                   <form action="{{ url_for('sign_up') }}" method="POST" enctype="multipart/form-data" >
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
-                      {{ form.email(class="form-control", placeholder="Email") }}
+                      <label for="email" class="form-label">E-mail</label>
+                      {{ form.email(class="form-control", placeholder="") }}
                     </div>
                     <div class="mb-3">
-                      {{ form.password(class="form-control", placeholder="password") }}
+                      <label for="password" class="form-label">Mot de passe</label>
+                      {{ form.password(class="form-control", placeholder="") }}
                     </div>
+
                     <div class="mb-3">
-                      {{ form.date_of_birth(class="form-control", placeholder="Date de naissance") }}
+                      <label for="password_confirm" class="form-label">Confirmez votre mot de passe</label>
+                      {{ form.password(class="form-control", placeholder="") }}
                     </div>
                     <div class="text-center">
                       <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Créer mon compte</button>

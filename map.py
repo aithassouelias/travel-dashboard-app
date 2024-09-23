@@ -1,7 +1,7 @@
 import folium
 
 # Créer une carte sans spécifier de coordonnées initiales
-m = folium.Map(zoom_start=4, tiles='cartodbdark_matter', min_zoom=3, max_bounds=True)
+m = folium.Map(zoom_start=4, min_zoom=3, max_bounds=True)
 
 locations = [
     ("Tour Eiffel, Paris", [48.8584, 2.2945]),
@@ -27,8 +27,8 @@ for i, location in enumerate(locations):
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;
-                background-color: black;
-                color: gold;
+                background-color: white;
+                color: purple;
                 font-weight: bold;
                 font-size: 14px;">
                 {i + 1}

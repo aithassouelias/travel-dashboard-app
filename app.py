@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from utils.functions import create_map_with_multiple_routes, create_empty_map, get_coordinates, get_location_info
-from utils.forms import AddTripForm, AddPOIForm, ModifyProfileForm, AddUserForm
-from utils.models import db, Trip, POI, User
+from utils.forms import AddTripForm, AddPOIForm, ModifyProfileForm, AddUserForm, UserConnexionForm
+from utils.models import db, Trips, Points_Of_Interest, Users
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -17,7 +17,13 @@ def landing_page():
 def sign_up():
     form = AddUserForm()
     if form.validate_on_submit():
-        new_user = User(
+        user = Users.query.filter_by(email=form.email.data).first() # if this returns a user, then the email already exists in database
+
+        if user: # if a user is found, we want to redirect back to signup page so user can try again
+            flash('Cette adresse mail est déjà utilisée.')
+            return redirect(url_for('sign_in'))
+        
+        new_user = Users(
             email=form.email.data,
             password=form.password.data,
             username="@eliasait7",
@@ -40,7 +46,7 @@ def dashboard():
 def travels():
     form = AddTripForm()
     if form.validate_on_submit():
-        new_trip = Trip(
+        new_trip = Trips(
             title=form.title.data,
             description=form.description.data,
             destination=form.destination.data,
@@ -53,13 +59,13 @@ def travels():
         db.session.commit()
         return redirect(url_for('travels'))
     
-    trips = Trip.query.all()  # Récupère tous les voyages de la base de données
+    trips = Trips.query.all()  # Récupère tous les voyages de la base de données
     return render_template('travels.html', trips=trips, form=form)
 
 @app.route('/travel/<int:trip_id>', methods=['GET', 'POST'])
 def travel_details(trip_id):
-    trip = Trip.query.get_or_404(trip_id)
-    pois = POI.query.filter_by(trip_id=trip_id).all()
+    trip = Trips.query.get_or_404(trip_id)
+    pois = Points_Of_Interest.query.filter_by(trip_id=trip_id).all()
     duration = (trip.end_date - trip.start_date).days
     
     num_visited_pois = 0 + len([poi for poi in pois if poi.visited])
@@ -73,7 +79,7 @@ def travel_details(trip_id):
             coordinates = get_coordinates(form.name.data)
             place_name = get_location_info(coordinates[0], coordinates[1])
             # Save the new POI in the database
-            new_poi = POI(
+            new_poi = Points_Of_Interest(
                 name=form.name.data,
                 visit_date=form.visit_date.data,
                 latitude=coordinates[0],
@@ -108,7 +114,7 @@ def travel_details(trip_id):
 def profile():
     form = ModifyProfileForm()
     if form.validate_on_submit():
-        new_user = User(
+        new_user = Users(
             user_id = form.user_id.data, 
             username = form.username.data,
             date_of_birth = form.date_of_birth.data,
@@ -121,6 +127,6 @@ def friends():
     return render_template('friends.html')
 
 if __name__ == '__main__':
-   with app.app_context():
-        db.create_all()  # Crée toutes les tables
+   #with app.app_context():
+        #db.create_all()  # Crée toutes les tables
    app.run(debug=True)

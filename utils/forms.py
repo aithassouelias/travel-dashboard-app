@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, FileField, SubmitField, SelectField, FloatField, DateTimeField, PasswordField
-from wtforms.validators import DataRequired, Optional
+from wtforms.validators import DataRequired, Optional, Email, EqualTo
 
 class AddTripForm(FlaskForm):
     title = StringField('Titre du voyage', validators=[DataRequired()])
@@ -27,10 +27,9 @@ class ModifyProfileForm(FlaskForm):
 
 
 class AddUserForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Mot de passe', validators=[DataRequired()])
     password_confirm = PasswordField('Confirmez votre mot de passe', validators=[DataRequired()])
-    date_of_birth = DateField('Date de naissance', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Créer mon compte')
 
 class UserConnexionForm(FlaskForm):

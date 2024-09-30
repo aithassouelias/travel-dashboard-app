@@ -3,6 +3,7 @@ import openrouteservice
 from datetime import datetime
 from io import BytesIO
 import requests
+from utils.models import Users
 
 def create_map_with_multiple_routes(pois : list, api_key : str):
     """
@@ -113,10 +114,10 @@ def create_empty_map():
     # Créer une carte sans spécifier de coordonnées initiales
     m = folium.Map(zoom_start=4, tiles='cartodbdark_matter', min_zoom=3, max_bounds=True)
 
-    map_io = BytesIO()
-    m.save(map_io, close_file=False)
-    map_html = map_io.getvalue().decode()
+   
 
+    # Create a BytesIO object to hold the map HTML
+    map_html = m._repr_html_()
     return map_html
 
 def get_coordinates(place_name : str):
@@ -159,3 +160,21 @@ def get_location_info(lat : float, lon : float):
         return data
     else:
         return response
+    
+import random
+import string
+
+def generate_username(email):
+    # Extract username from email (before @ symbol)
+    base_username = email.split('@')[0]
+
+    # Check if the username already exists
+    username = base_username
+    count = 1
+
+    # Keep appending numbers or random characters until the username is unique
+    while Users.query.filter_by(username=username).first() is not None:
+        username = f"{base_username}{count}"
+        count += 1
+
+    return username

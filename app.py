@@ -1,8 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from utils.functions import create_map_with_multiple_routes, create_empty_map, get_coordinates, get_location_info
+from utils.functions import generate_username,create_map_with_multiple_routes, create_empty_map, get_coordinates, get_location_info
 from utils.forms import AddTripForm, AddPOIForm, ModifyProfileForm, AddUserForm, UserConnexionForm
 from utils.models import db, Trips, Points_Of_Interest, Users
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+import logging
+from logging import FileHandler
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -13,36 +17,75 @@ db.init_app(app)
 def landing_page():
     return render_template('landing_page.html')
 
-@app.route('/sign-up', methods=['GET', 'POST'])
+# Initialize Login Manager
+login_manager = LoginManager(app)
+login_manager.login_view = 'sign_in'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+@app.route('/sign-up', methods=['GET','POST'])
 def sign_up():
     form = AddUserForm()
     if form.validate_on_submit():
-        user = Users.query.filter_by(email=form.email.data).first() # if this returns a user, then the email already exists in database
-
-        if user: # if a user is found, we want to redirect back to signup page so user can try again
+        
+        # Check if the email already exists
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user:
             flash('Cette adresse mail est déjà utilisée.')
             return redirect(url_for('sign_in'))
         
-        new_user = Users(
-            email=form.email.data,
-            password=form.password.data,
-            username="@eliasait7",
-            date_of_birth=form.date_of_birth.data
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('dashboard'))
+        if form.password.data == form.password_confirm.data:
+            new_user = Users(
+                email=form.email.data,
+                name=form.email.data.split('@')[0],
+                password=generate_password_hash(form.password.data, method='pbkdf2:sha256'),
+                username=form.email.data.split('@')[0],
+                account_type=1
+            )
+            db.session.add(new_user)
+            db.session.commit()  # This should save the new user to the database
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Veuillez confirmer votre mot de passe avec un mot de passe identique')
+    else:
+        print(form.errors)  # Print errors if form validation fails
+
     return render_template('sign-up.html', form=form)
 
-@app.route('/sign-in')
+@app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
-    return render_template('sign-in.html')
+    form = UserConnexionForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        user = Users.query.filter_by(email=email).first()
+        
+        if user and check_password_hash(user.password, password) :
+            print(user.password, password)
+            login_user(user)
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('dashboard'))
+
+        flash('Invalid credentials. Please try again.', 'danger')
+    return render_template('sign-in.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out!', 'info')
+    return redirect(url_for('sign_in'))
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/travels', methods=['GET', 'POST'])
+@login_required
 def travels():
     form = AddTripForm()
     if form.validate_on_submit():
@@ -63,6 +106,7 @@ def travels():
     return render_template('travels.html', trips=trips, form=form)
 
 @app.route('/travel/<int:trip_id>', methods=['GET', 'POST'])
+@login_required
 def travel_details(trip_id):
     trip = Trips.query.get_or_404(trip_id)
     pois = Points_Of_Interest.query.filter_by(trip_id=trip_id).all()
@@ -111,6 +155,7 @@ def travel_details(trip_id):
                            num_visited_pois=num_visited_pois, num_to_visit_pois=num_to_visit_pois, form=form, map_html=map_html)
 
 @app.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
     form = ModifyProfileForm()
     if form.validate_on_submit():
@@ -120,13 +165,16 @@ def profile():
             date_of_birth = form.date_of_birth.data,
             email = form.email.data
         )
-    return render_template('profile.html', form=form)
+    username = current_user.username
+    name = current_user.name
+    return render_template('profile.html', form=form, username=username, name=name)
 
 @app.route('/friends')
+@login_required
 def friends():
     return render_template('friends.html')
 
 if __name__ == '__main__':
-   #with app.app_context():
-        #db.create_all()  # Crée toutes les tables
+   with app.app_context():
+        db.create_all()  # Crée toutes les tables
    app.run(debug=True)

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, FileField, SubmitField, SelectField, FloatField, DateTimeField, PasswordField
+from wtforms import StringField, DateField, FileField, SubmitField, BooleanField, SelectField, FloatField, DateTimeField, PasswordField
 from wtforms.validators import DataRequired, Optional, Email, EqualTo
 
 class AddTripForm(FlaskForm):
@@ -8,13 +8,14 @@ class AddTripForm(FlaskForm):
     destination = StringField('Destination', validators=[DataRequired()])
     start_date = DateField('Début', format='%Y-%m-%d', validators=[DataRequired()])
     end_date = DateField('Fin', format='%Y-%m-%d', validators=[DataRequired()])
+    transport_type = SelectField('Statut', choices=["Train", "Avion", "Bateau","Bus","Voiture","Vélo","Marche à pied"], validators=[DataRequired()])
     image = FileField('Photo de couverture')
     submit = SubmitField('Ajouter le voyage')
 
 class AddPOIForm(FlaskForm):
     name = StringField('Nom', validators=[DataRequired()])
     visit_date = DateField('Date de visite', format='%Y-%m-%d', validators=[DataRequired()])
-    visited = SelectField('Statut', choices=[(0, 'À visiter'), (1, 'Visité')], coerce=int, validators=[DataRequired()])
+    visited = BooleanField('Visité')  # Champ boolean
     submit = SubmitField('Ajouter')
 
 class ModifyProfileForm(FlaskForm):

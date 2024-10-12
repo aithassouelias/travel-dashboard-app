@@ -33,13 +33,6 @@ class Destinations(db.Model):
     country = db.Column(db.String(100), nullable=False)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
-class Transport_Type(db.Model):
-    __tablename__ = 'transport_type'  # Explicit table name
-
-    id = db.Column(db.Integer, primary_key=True)
-    icon = db.Column(db.String(100), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-
 class Trips(db.Model):
     __tablename__ = 'trips'
 
@@ -48,16 +41,17 @@ class Trips(db.Model):
     # Trip information
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255))
-    destination = db.Column(db.String(100))
+    destination = db.Column(db.String(100), nullable=False)
+    transport_type = db.Column(db.String(100), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     cover_picture = db.Column(db.String(100))
+    
 
     # Relationships
     destinations = db.relationship('Destinations', backref='trip', lazy=True)
     pois = db.relationship('Points_Of_Interest', backref='trip', lazy=True)
     owner_user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    transport_type_id = db.Column(db.Integer, db.ForeignKey('transport_type.id'), nullable=False)
 
 class Points_Of_Interest(db.Model):
     __tablename__ = 'points_of_interest'

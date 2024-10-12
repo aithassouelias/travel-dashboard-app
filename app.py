@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from utils.functions import generate_username,create_map_with_multiple_routes, create_empty_map, get_coordinates, get_location_info
+from utils.functions import generate_username,create_map_with_multiple_routes, create_empty_map, create_map_with_multiple_pois, get_coordinates, get_location_info, get_pretty_location_infos
 from utils.forms import AddTripForm, AddPOIForm, ModifyProfileForm, AddUserForm, UserConnexionForm
 from utils.models import db, Trips, Points_Of_Interest, Users
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -82,27 +82,47 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    trips = Trips.query.filter_by(owner_user=current_user.id).all()
+    num_trips = 0+ len(trips)
+    countries_visited = 0+ len(trips)
+    
+
+    destinations = []
+    for trip in trips:
+        lat, lon = get_coordinates(trip.destination)
+        if trip.destination:  # Assurez-vous que la destination existe
+            destinations.append((
+                trip.title,         # Nom de la destination
+                [lat, lon]
+            ))
+    # Créer la carte avec les destinations
+    map_html = create_map_with_multiple_pois(destinations)  # Remplacez par votre clé API
+    return render_template('dashboard.html', num_trips=num_trips, map_html=map_html)
 
 @app.route('/travels', methods=['GET', 'POST'])
 @login_required
 def travels():
     form = AddTripForm()
     if form.validate_on_submit():
+        # Get destinations informations
+        destination_infos = get_pretty_location_infos(form.destination.data)
+        city = destination_infos[0]
+        country = destination_infos[1]
+        
+        # Save this trip
         new_trip = Trips(
             title=form.title.data,
-            description=form.description.data,
-            destination=form.destination.data,
+            destination=city+","+country,
             start_date=form.start_date.data,
             end_date=form.end_date.data,
-            image=form.image.data.filename if form.image.data else None,
-            user_id = 1
+            transport_type = form.transport_type.data,
+            owner_user = current_user.id
         )
         db.session.add(new_trip)
         db.session.commit()
         return redirect(url_for('travels'))
     
-    trips = Trips.query.all()  # Récupère tous les voyages de la base de données
+    trips = Trips.query.all()  # Recup all trips in the database
     return render_template('travels.html', trips=trips, form=form)
 
 @app.route('/travel/<int:trip_id>', methods=['GET', 'POST'])
@@ -123,12 +143,13 @@ def travel_details(trip_id):
             coordinates = get_coordinates(form.name.data)
             place_name = get_location_info(coordinates[0], coordinates[1])
             # Save the new POI in the database
+            print(form.visited.data)
             new_poi = Points_Of_Interest(
                 name=form.name.data,
                 visit_date=form.visit_date.data,
                 latitude=coordinates[0],
                 longitude=coordinates[1],
-                visited=form.visited.data,
+                visited=bool(form.visited.data),
                 trip_id=trip.id
             )
             db.session.add(new_poi)
@@ -139,17 +160,17 @@ def travel_details(trip_id):
         pois_for_map = [
             {
                 'name': poi.name,
-                'coords': (poi.longitude, poi.latitude),
+                'coords': [float(poi.longitude), float(poi.latitude)],
                 'date_time': poi.visit_date.strftime('%Y-%m-%d %H:%M')
             }
             for poi in pois
         ]
         api_key = '5b3ce3597851110001cf624859eadc08586440cca8901585be5744ea' 
 
-        # map_html = create_map_with_multiple_routes(pois_for_map, api_key)
-        map_html = create_empty_map()
+        map_html = create_map_with_multiple_routes(pois_for_map,api_key)
     else : 
-        map_html = create_empty_map()
+        lat, lon = get_coordinates(trip.destination)
+        map_html = create_empty_map(lat, lon)
     
     return render_template('travel_details.html', trip=trip, pois=pois, duration=duration,
                            num_visited_pois=num_visited_pois, num_to_visit_pois=num_to_visit_pois, form=form, map_html=map_html)

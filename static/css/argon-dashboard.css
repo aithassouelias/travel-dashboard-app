@@ -27080,3 +27080,14 @@ tr:hover .action-trigger {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+#map {
+  height: 100%;
+  width: 100%;
+  position: relative; /* Assure que le positionnement soit relatif */
+}
+
+.leaflet-container {
+  height: 100%; /* Ajuste la hauteur de la carte Leaflet */
+  width: 100%;  /* Ajuste la largeur de la carte Leaflet */
+}

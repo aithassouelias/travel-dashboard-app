@@ -41,31 +41,39 @@
         <div class="modal-body">
           <form action="{{ url_for('travels') }}" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            <div class="mb-3">
-              <label for="title" class="form-label">Titre du voyage</label>
-              {{ form.title(class="form-control", placeholder="Ex: Voyages d'affaires à Paris") }}
+            <div class="mb-3 row">
+              <div class="col">
+                <label for="title" class="form-label"><i class='fas fa-map-marker-alt'></i> &nbsp;Titre du voyage</label>
+                {{ form.title(class="form-control", placeholder="Ex: Voyages d'affaires à Paris") }}
+              </div>
+              <div class="col">
+                <label for="destination" class="form-label"><i class='fas fa-map-marker-alt'></i> &nbsp; Destination principale</label>
+                {{ form.destination(class="form-control", placeholder="Ex: Paris") }}
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="description" class="form-label">Résumé</label>
-              {{ form.description(class="form-control", placeholder="Ex: Une semaine à Paris pour affaires") }}
+            
+            <div class="mb-3 row">
+              <div class="col">
+                <label for="start_date" class="form-label"><i class='fas fa-map-marker-alt'></i> &nbsp;Début</label>
+                {{ form.start_date(class="form-control") }}
+              </div>
+              <div class="col">
+                <label for="end_date" class="form-label"><i class='fas fa-map-marker-alt'></i> &nbsp;Fin</label>
+                {{ form.end_date(class="form-control") }}
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="destination" class="form-label">Destination</label>
-              {{ form.destination(class="form-control", placeholder="Ex: Paris") }}
+            <div class="mb-3 row">
+              <div class="col">
+                <label for="transport_type" class="form-label"><i class='fas fa-map-marker-alt'></i> &nbsp; Type de transport</label>
+                {{ form.transport_type(class="form-select", id="transport_type") }}
+              </div>
+                
+              <div class="col">
+                <label for="image" class="form-label">Photo de couverture</label>
+                {{ form.image(class="form-control") }}
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="start_date" class="form-label">Début</label>
-              {{ form.start_date(class="form-control") }}
-            </div>
-            <div class="mb-3">
-              <label for="end_date" class="form-label">Fin</label>
-              {{ form.end_date(class="form-control") }}
-            </div>
-            <div class="mb-3">
-              <label for="image" class="form-label">Photo de couverture</label>
-              {{ form.image(class="form-control") }}
-            </div>
-            <button type="submit" class="btn btn-primary">Enregistrer le voyage</button>
+            <button type="submit" class="btn btn-primary">Ajouter mon voyage</button>
           </form>
         </div>
       </div>

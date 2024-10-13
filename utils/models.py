@@ -42,6 +42,8 @@ class Trips(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255))
     destination = db.Column(db.String(100), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     transport_type = db.Column(db.String(100), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)

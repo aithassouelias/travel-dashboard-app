@@ -199,7 +199,7 @@ def get_pretty_location_infos(place_name : str):
     city = infos["address"]["city"]
     country = infos["address"]["country"]
 
-    return [city, country, address_type]
+    return [city, country, address_type, lat,lon]
 
 def generate_username(email):
     # Extract username from email (before @ symbol)

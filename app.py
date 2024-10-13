@@ -88,15 +88,17 @@ def dashboard():
     
 
     destinations = []
-    for trip in trips:
-        lat, lon = get_coordinates(trip.destination)
-        if trip.destination:  # Assurez-vous que la destination existe
-            destinations.append((
-                trip.title,         # Nom de la destination
-                [lat, lon]
-            ))
-    # Créer la carte avec les destinations
-    map_html = create_map_with_multiple_pois(destinations)  # Remplacez par votre clé API
+    if trips : 
+        for trip in trips:
+            if trip.destination:  # Assurez-vous que la destination existe
+                destinations.append((
+                    trip.title,         # Nom de la destination
+                    [trip.latitude, trip.longitude]
+                ))
+        # Créer la carte avec les destinations
+        map_html = create_map_with_multiple_pois(destinations)  # Remplacez par votre clé API
+    else :
+        map_html= create_empty_map(48.2, 2)
     return render_template('dashboard.html', num_trips=num_trips, map_html=map_html)
 
 @app.route('/travels', methods=['GET', 'POST'])
@@ -108,11 +110,15 @@ def travels():
         destination_infos = get_pretty_location_infos(form.destination.data)
         city = destination_infos[0]
         country = destination_infos[1]
+        lat = destination_infos[3]
+        lon = destination_infos[4]
         
         # Save this trip
         new_trip = Trips(
             title=form.title.data,
             destination=city+","+country,
+            latitude = lat, 
+            longitude = lon,
             start_date=form.start_date.data,
             end_date=form.end_date.data,
             transport_type = form.transport_type.data,
@@ -198,4 +204,6 @@ def friends():
 if __name__ == '__main__':
    with app.app_context():
         db.create_all()  # Crée toutes les tables
+        db.session.expire_all() 
    app.run(debug=True)
+    

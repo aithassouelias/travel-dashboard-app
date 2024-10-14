@@ -110,19 +110,7 @@ def create_map_with_multiple_pois(locations: list):
         folium.Marker(
             location=coord,
             popup=folium.Popup(popup_content, max_width=200),
-            icon=folium.DivIcon(html=f"""
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 50%;
-                    background-color: #6973dc;
-                    color: white;
-                    font-weight: bold;
-                    font-size: 14px;">{i + 1}</div>
-            """)
+            icon=folium.Icon(icon="glyphicon glyphicon-heart", color="white", icon_color="#6973DC")
         ).add_to(m)
 
     # Calculate bounds to adjust the map automatically to fit all markers

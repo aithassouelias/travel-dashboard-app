@@ -99,7 +99,7 @@ def dashboard():
         map_html = create_map_with_multiple_pois(destinations)  # Remplacez par votre clé API
     else :
         map_html= create_empty_map(48.2, 2)
-    return render_template('dashboard.html', num_trips=num_trips, map_html=map_html)
+    return render_template('dashboard_refont.html', num_trips=num_trips, map_html=map_html)
 
 @app.route('/travels', methods=['GET', 'POST'])
 @login_required
@@ -149,7 +149,6 @@ def travel_details(trip_id):
             coordinates = get_coordinates(form.name.data)
             place_name = get_location_info(coordinates[0], coordinates[1])
             # Save the new POI in the database
-            print(form.visited.data)
             new_poi = Points_Of_Interest(
                 name=form.name.data,
                 visit_date=form.visit_date.data,

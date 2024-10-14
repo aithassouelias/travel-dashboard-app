@@ -27091,3 +27091,64 @@ tr:hover .action-trigger {
   height: 100%; /* Ajuste la hauteur de la carte Leaflet */
   width: 100%;  /* Ajuste la largeur de la carte Leaflet */
 }
+
+.kpi-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Par défaut, 2 colonnes */
+  gap: 10px;
+}
+
+.kpi-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s; /* Pour les effets de survol */
+}
+
+
+/* Styles pour écrans larges */
+@media (min-width: 768px) {
+  .kpi-container {
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes sur les grands écrans */
+  }
+}
+
+.card {
+  position: relative; /* Pour que le conteneur soit positionné relativement */
+}
+
+.card-body {
+  padding: 0; /* Élimine le padding par défaut pour la carte */
+}
+
+.map-container {
+  width: 100%; /* Prend toute la largeur disponible */
+  height: 0; /* Initialise la hauteur à 0 */
+  padding-bottom: 100%; /* Maintient le ratio 1:1 pour le carré */
+  position: relative; /* Nécessaire pour positionner la carte à l'intérieur */
+}
+
+.map-content {
+  position: absolute; /* Positionne la carte à l'intérieur de son conteneur */
+  top: 0;
+  left: 0;
+  width: 100%; /* Prend toute la largeur du conteneur */
+  height: 100%; /* Prend toute la hauteur du conteneur */
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    padding-bottom: 100%; /* Carré sur mobile */
+  }
+}
+
+@media (min-width: 769px) {
+  .map-container {
+    padding-bottom: 50%; /* Optionnel : ajuste pour les écrans plus larges */
+  }
+}
+
+
+

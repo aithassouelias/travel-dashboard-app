@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/images/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/images/favicon.png">
+    <title>SaveMyTravels</title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- CSS Files -->
+    <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": false,
+                "info": false,
+                "lengthChange": false,
+                "responsive": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+                },
+                "autoWidth": false
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-primary bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand font-weight-bolder text-white ms-lg-0 ms-3" href="{{url_for('landing_page')}}">
+                SaveMyTravels
+            </a>
+            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon mt-2"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Menu Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('dashboard') }}">
+                        <i class="fa fa-chart-pie text-dark me-1"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url_for('travels') }}"> 
+                        <i class="fa fa-user opacity-6 text-dark me-1"></i>
+                        Mes voyages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url_for('profile') }}">
+                        <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
+                        Mon profil
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- End Menu Offcanvas -->
+
+    <main class="main-content position-relative border-radius-lg pt-5">
+        <!-- BODY -->
+        {% block body %} {% endblock %}
+        <!-- End BODY -->
+
+        <!-- Footer -->
+        <footer class="footer pt-3">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            © <script>
+                                document.write(new Date().getFullYear())
+                            </script>,
+                            made with <i class="fa fa-heart"></i> by
+                            <a href="{{url_for('landing_page')}}" class="font-weight-bold" target="_blank">SaveMyTravels</a>
+                            for better trips.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!--   Core JS Files   -->
+    <!-- Core JS Files -->
+    <script src="../static/js/core/popper.min.js" defer></script>
+    <script src="../static/js/core/bootstrap.min.js" defer></script>
+    <script src="../static/js/plugins/perfect-scrollbar.min.js" defer></script>
+    <script src="../static/js/plugins/smooth-scrollbar.min.js" defer></script>
+    <script src="../static/js/plugins/chartjs.min.js" defer></script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../static/js/argon-dashboard.min.js?v=2.0.4"></script>
+</body>
+
+</html>

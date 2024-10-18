@@ -27123,32 +27123,55 @@ tr:hover .action-trigger {
   padding: 0; /* Élimine le padding par défaut pour la carte */
 }
 
-.map-container {
-  width: 100%; /* Prend toute la largeur disponible */
-  height: 0; /* Initialise la hauteur à 0 */
-  padding-bottom: 100%; /* Maintient le ratio 1:1 pour le carré */
-  position: relative; /* Nécessaire pour positionner la carte à l'intérieur */
+/* Assurer qu'il n'y ait pas de scroll horizontal */
+body {
+  overflow-x: hidden;
 }
 
-.map-content {
-  position: absolute; /* Positionne la carte à l'intérieur de son conteneur */
-  top: 0;
-  left: 0;
-  width: 100%; /* Prend toute la largeur du conteneur */
-  height: 100%; /* Prend toute la hauteur du conteneur */
+/* Rendre la map et les cards responsives */
+#map-container {
+  width: 100%;
+  height: auto; /* Adapter la hauteur selon la largeur de l'écran */
+  min-height: 300px; /* Conserver une taille minimum pour les petits écrans */
 }
 
-@media (max-width: 768px) {
-  .map-container {
-    padding-bottom: 100%; /* Carré sur mobile */
-  }
+.card {
+  width: 100%; /* Adapter les cards à la largeur de l'écran */
 }
 
-@media (min-width: 769px) {
-  .map-container {
-    padding-bottom: 50%; /* Optionnel : ajuste pour les écrans plus larges */
-  }
+.icon-shape {
+  width: 40px; /* Ajuster la taille des icônes pour les petits écrans */
+  height: 40px;
 }
 
+/*Onglets page travel details*/
+.tabs {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
 
+.tablinks {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  transition: background-color 0.3s;
+}
 
+.tablinks:hover {
+  background-color: #ddd;
+}
+
+.tablinks.active {
+  background-color: #ffffff;
+  border-bottom: 2px solid #333;
+}
+
+.tabcontent {
+  display: none;
+  padding: 20px;
+  border-top: none;
+}

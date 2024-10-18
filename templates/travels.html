@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "base_refont.html" %}
 {% block title %} Mes voyages {% endblock %}
 {% block body %}
 
 <div class="container-fluid py-4">
-  <div class="row mb-4">
-    <div class="col text-end">
-      <!-- Bouton pour ouvrir le modal -->
-      <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTripModal">
-        Ajouter un voyage
-      </a>
+  <h3 class="text-black">Mes voyages</h3>
+  <div class="row height d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+      <div class="form">
+        <input type="text" class="form-control form-input" placeholder="Search anything...">
+      </div>
     </div>
   </div>
 
@@ -20,10 +20,9 @@
           <img src="{{ url_for('static', filename='images/destinations/' ~ trip.image) }}" class="img-fluid border-radius-lg" alt="{{ trip.title }}">
         </div>
         <div class="card-body text-center">
-          <!-- Title of the Trip -->
-          <h5 class="card-title">{{ trip.title }}</h5>
+            
           <!-- Details button -->
-          <a href="{{ url_for('travel_details', trip_id=trip.id) }}" class="btn btn-primary">Voir les détails</a>
+          <a href="{{ url_for('travel_details', trip_id=trip.id) }}" class="card-title">{{ trip.title }}</a>
         </div>
       </div>
     </div>
@@ -82,4 +81,10 @@
 
 </div>
 
+<!-- Bouton flottant avec un lien pour ajouter un voyage -->
+<div class="position-fixed bottom-0 end-0 mb-4 me-4">
+  <a href="#addTripModal" data-bs-toggle="modal" class="btn btn-primary rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+      <i class="bi bi-plus" style="font-size: 24px;"></i> <!-- Ajustez la taille de l'icône si nécessaire -->
+  </a>
+</div>
 {% endblock %}

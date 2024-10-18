@@ -1,58 +1,40 @@
-{% extends "base.html" %}
+{% extends "base_refont.html" %}
 {% block body %}
 
 <div class="container-fluid py-3">
-  <div class="trip-header text-center">
-    <h1 class="trip-title font-weight-bolder text-white mt-6">Mon voyage à Bali</h1>
-    <p class="trip-dates">Du 7 au 10 juillet 2024</p>
-    <p class="trip-collaborators">Amine, Elias,..</p>
+  <div class="trip-header">
+    <h1 class="trip-title font-weight-bolder text-black mt-6">{{trip.title}} &nbsp;<i class='fa fa-info-circle'></i> </h1>
+    <p class="trip-dates"><i class='fas fa-map-marker-alt'></i>&nbsp; {{trip.destination}}</p>
+    
   </div>
 </div>
 
 <!-- KPI Section -->
 <div class="container-fluid py-3">
-  <div class="kpi-container">
-    <div class="kpi-card" data-bs-toggle="modal" data-bs-target="#pointsToVisitModal">
-      <div class="numbers">
-        <h5 class="font-weight-bolder">
-          10
-        </h5>
-        <p class="mb-0">
-          Lieux visités
-        </p>
-      </div>
-    </div>
-    <div class="kpi-card" data-bs-toggle="modal" data-bs-target="#pointsVisitedModal">
-      <div class="numbers">
-        <h5 class="font-weight-bolder">
-          10
-        </h5>
-        <p class="mb-0">
-          Lieux à visiter
-        </p>
-      </div>
-    </div>
+  <div class="row mt-2">
+    <div class="col-lg-7 mb-lg-0 mb-4">
+        <div class="h-100">
+          <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="400px" frameborder="10" class="rounded-map" style="border-radius: 15px;"></iframe>
+        </div>
+    </div>  
   </div>
-  
+  <div class="tabs">
+    <button class="tablinks" onclick="openTab(event, 'ToVisit')" id="defaultOpen">Lieux à visiter</button>
+    <button class="tablinks" onclick="openTab(event, 'Visited')">Lieux visités</button>
+  </div>
+
+  <div id="ToVisit" class="tabcontent">
+      <h3>Trips</h3>
+      <p>Content for trips will go here.</p>
+  </div>
+
+  <div id="Visited" class="tabcontent">
+      <h3>Statistics</h3>
+      <p>Content for statistics will go here.</p>
+  </div>
 
   <!-- Map and POI Table Section -->
-  <div class="row mt-4">
-    <!-- Map -->
-    
-      <!-- MAP -->
-      <div class="col-lg-5 mb-lg-0 mb-4">
-        <div class="card z-index-2 h-100">
-          <div class="card-body p-0 h-100">
-            <div class="map-container">
-              <div class="map-content">
-                {{ map_html | safe }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>     
-    
-
+  <div class="row mt-4">    
     <!-- POI Table -->
     <div class="col-lg-7 mb-lg-0 mb-4">
       <div class="card z-index-2 h-100">
@@ -125,27 +107,12 @@
     </div>
   </div>
 
-  <!-- Modal for Points to Visit -->
-  <div class="modal fade" id="pointsToVisitModal" tabindex="-1" aria-labelledby="pointsToVisitModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="pointsToVisitModalLabel">Points à Visiter</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul class="list-group">
-            <li class="list-group-item">Le Palais Princier</li>
-            <li class="list-group-item">Le Casino de Monte-Carlo</li>
-            <li class="list-group-item">Le Jardin Exotique</li>
-            <li class="list-group-item">Le Musée Océanographique</li>
-            <li class="list-group-item">La plage de Monte-Carlo</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <!-- Bouton flottant avec un lien pour ajouter un voyage -->
+  <div class="position-fixed bottom-0 end-0 mb-4 me-4">
+    <a href="#addLocationModal" data-bs-toggle="modal" class="btn btn-primary rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+      <i class='fas fa-plus' style='font-size:25px'></i> <!-- Ajustez la taille de l'icône si nécessaire -->
+    </a>
   </div>
-
   <!-- Modal for Points to Visit -->
   <div class="modal fade" id="pointsVisitedModal" tabindex="-1" aria-labelledby="pointsVisitedModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -166,7 +133,7 @@
       </div>
     </div>
   </div>
-
+  
 
 
   <!-- Modal for Adding POI -->
@@ -215,6 +182,23 @@
     </div>
   </div>
 
+  <script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    document.getElementById("defaultOpen").click();
+  </script>
 </div>
 
 

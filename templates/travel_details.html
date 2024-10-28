@@ -1,13 +1,24 @@
 {% extends "base_refont.html" %}
 {% block body %}
 
-<div class="container-fluid py-3">
-  <div class="trip-header">
-    <h1 class="trip-title font-weight-bolder text-black mt-6">{{trip.title}} &nbsp;<i class='fa fa-info-circle'></i> </h1>
-    <p class="trip-dates"><i class='fas fa-map-marker-alt'></i>&nbsp; {{trip.destination}}</p>
-    
+<div class="container-fluid p-0">
+  <div class="cover-image d-flex align-items-center justify-content-center text-white">
+      <h1>{{trip.title}}</h1>
+      <p class="trip-dates"><i class='fas fa-map-marker-alt'></i>&nbsp; {{trip.destination}}</p>
   </div>
 </div>
+
+<style>
+  .cover-image {
+  background-image: url("{{ url_for('static', filename='Marrakech.jpg') }}");
+  background-size: cover;
+  background-position: center;
+  height: 30vh; /* Adjust height as needed */
+  width: 100%;
+  }
+
+</style>
+
 
 <!-- KPI Section -->
 <div class="container-fluid py-3">
@@ -18,120 +29,125 @@
         </div>
     </div>  
   </div>
-  <div class="tabs">
-    <button class="tablinks" onclick="openTab(event, 'ToVisit')" id="defaultOpen">Lieux à visiter</button>
-    <button class="tablinks" onclick="openTab(event, 'Visited')">Lieux visités</button>
-  </div>
 
-  <div id="ToVisit" class="tabcontent">
-      <h3>Trips</h3>
-      <p>Content for trips will go here.</p>
-  </div>
-
-  <div id="Visited" class="tabcontent">
-      <h3>Statistics</h3>
-      <p>Content for statistics will go here.</p>
-  </div>
-
-  <!-- Map and POI Table Section -->
-  <div class="row mt-4">    
-    <!-- POI Table -->
-    <div class="col-lg-7 mb-lg-0 mb-4">
-      <div class="card z-index-2 h-100">
-        <div class="card-header d-flex justify-content-between align-items-center p-2">
-          <h6 class="mb-0" style="font-size: 14px;">Liste des Lieux</h6>
-          <button class="btn btn-outline-primary btn-sm" id="addLocationBtn" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#addLocationModal">
-            <i class="fas fa-plus"></i> Ajouter un lieu
-          </button>
-        </div>
-
-        <div class="card-body px-0 pt-0 pb-2">
-          <div class="table-responsive p-0">
-            <table id="dataTable" class="table align-items-center mb-0">
-              <thead>
-                <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lieux</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Statut</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for poi in pois %}
-                <tr>
-                  <td>
-                    <div class="d-flex px-2 py-1">
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">
-                          <a href="https://www.google.com/maps/dir/?api=1&destination={{ poi.latitude }},{{ poi.longitude }}" target="_blank" class="text-decoration-none">
-                              {{ poi.name }}
-                          </a>
-                      </h6>
-                        <p class="text-xs text-secondary mb-0">Monument</p>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td class="align-middle text-center text-sm">
-                    <h6 class="mb-0 text-sm">{{ poi.visit_date.strftime('%d/%m/%Y - %H:%M') }}</h6>
-                  </td>
-
-                  <td class="align-middle text-center text-sm">
-                    <span class="badge badge-sm {% if poi.visited %}bg-gradient-success{% else %}bg-gradient-warning{% endif %}">
-                      {% if poi.visited %}Visité{% else %}À visiter{% endif %}
-                    </span>
-                  </td>
-
-                  <td class="text-end">
-                    <div class="action-menu">
-                      <button class="btn btn-link text-secondary p-0 action-trigger">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">
-                          <i class="fas fa-pencil-alt me-2"></i> Modifier
-                        </a>
-                        <a class="dropdown-item text-danger" href="#">
-                          <i class="fas fa-trash me-2"></i> Supprimer
-                        </a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+  <div class="row mt-2">
+    <div class="accordion" id="categoryAccordion">
+  
+      <!-- Liste des lieux à visiter (Place to Visit) -->
+      <h3 class="mb-0">
+        <a class="collapsed" data-bs-toggle="collapse" href="#placesToVisitList" role="button" aria-expanded="false" aria-controls="placesToVisitList">
+          Lieux
+        </a>
+      </h3>
+          
+        
+      <!-- Liste déroulable des lieux -->
+      <div id="placesToVisitList" class="collapse" data-bs-parent="#categoryAccordion">
+        {% for poi in pois %}
+        <div class="card mb-3 col-6" id="sortable-list">
+          <div class="row g-0 align-items-center">
+            <!-- Left Section: Place Number -->
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <div class="place-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                {{ loop.index }}
+              </div>
+            </div>
+            <!-- Middle Section: Place Title -->
+            
+            <div class="col-10">
+              <div class="card-body">
+                <a href="https://www.google.com/maps/dir/?api=1&destination={{ poi.latitude }},{{ poi.longitude }}" target="_blank" class="text-decoration-none fw-bold fs-5">
+                  {{ poi.name }}
+                </a>
+                <p class="text-muted small mt-1 mb-0">14/10/2024 17:00</p>
+              </div>
+            </div>
+            
           </div>
         </div>
+        {% endfor %}
       </div>
     </div>
+  
+      <!-- Autres catégories, par exemple Restaurants -->
+      
+    <h3 class="mb-0">
+      <a class="collapsed" data-bs-toggle="collapse" href="#restaurantsList" role="button" aria-expanded="false" aria-controls="restaurantsList">
+        Restaurants
+      </a>
+    </h3>
+          
+  
+      <!-- Liste déroulable des restaurants -->
+      <div id="restaurantsList" class="collapse" data-bs-parent="#categoryAccordion">
+        {% for poi in pois %}
+        <div class="card mb-3 col-6" id="sortable-list">
+          <div class="row g-0 align-items-center">
+            <!-- Left Section: Place Number -->
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <div class="place-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                {{ loop.index }}
+              </div>
+            </div>
+            <!-- Middle Section: Place Title -->
+            
+            <div class="col-10">
+              <div class="card-body">
+                <a href="https://www.google.com/maps/dir/?api=1&destination={{ poi.latitude }},{{ poi.longitude }}" target="_blank" class="text-decoration-none fw-bold fs-5">
+                  {{ poi.name }}
+                </a>
+                <p class="text-muted small mt-1 mb-0">14/10/2024 17:00</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <h3 class="mb-0">
+      <a class="collapsed" data-bs-toggle="collapse" href="#placesToVisitList" role="button" aria-expanded="false" aria-controls="placesToVisitList">
+        Hébergements
+      </a>
+    </h3>
+        
+      
+    <!-- Liste déroulable des lieux -->
+    <div id="placesToVisitList" class="collapse" data-bs-parent="#categoryAccordion">
+      {% for poi in pois %}
+      <div class="card mb-3 col-6" id="sortable-list">
+        <div class="row g-0 align-items-center">
+          <!-- Left Section: Place Number -->
+          <div class="col-2 d-flex align-items-center justify-content-center">
+            <div class="place-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              {{ loop.index }}
+            </div>
+          </div>
+          <!-- Middle Section: Place Title -->
+          
+          <div class="col-10">
+            <div class="card-body">
+              <a href="https://www.google.com/maps/dir/?api=1&destination={{ poi.latitude }},{{ poi.longitude }}" target="_blank" class="text-decoration-none fw-bold fs-5">
+                {{ poi.name }}
+              </a>
+              <p class="text-muted small mt-1 mb-0">14/10/2024 17:00</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
+
+</div>
 
   <!-- Bouton flottant avec un lien pour ajouter un voyage -->
   <div class="position-fixed bottom-0 end-0 mb-4 me-4">
     <a href="#addLocationModal" data-bs-toggle="modal" class="btn btn-primary rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
-      <i class='fas fa-plus' style='font-size:25px'></i> <!-- Ajustez la taille de l'icône si nécessaire -->
+      <i class='fas fa-plus' style='font-size:25px'></i>
     </a>
-  </div>
-  <!-- Modal for Points to Visit -->
-  <div class="modal fade" id="pointsVisitedModal" tabindex="-1" aria-labelledby="pointsVisitedModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="pointsToVisitModalLabel">Lieux visités</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul class="list-group">
-            <li class="list-group-item">Le Palais Princier</li>
-            <li class="list-group-item">Le Casino de Monte-Carlo</li>
-            <li class="list-group-item">Le Jardin Exotique</li>
-            <li class="list-group-item">Le Musée Océanographique</li>
-            <li class="list-group-item">La plage de Monte-Carlo</li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </div>
   
 
@@ -182,6 +198,36 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script>
+    var sortable = new Sortable(document.getElementById('sortable-list'), {
+      animation: 150,
+      handle: '.card',
+      onEnd: function (evt) {
+        var order = [];
+        document.querySelectorAll('#sortable-list .card').forEach(function (card, index) {
+          order.push({
+            id: card.getAttribute('data-id'),
+            position: index + 1
+          });
+        });
+  
+        // Envoi de la nouvelle disposition au serveur via AJAX
+        $.ajax({
+          url: '/save-order', // L'URL où tu souhaites envoyer les données
+          method: 'POST',
+          data: JSON.stringify({order: order}),
+          contentType: 'application/json',
+          success: function (response) {
+            console.log('Ordre sauvegardé avec succès !');
+          },
+          error: function (error) {
+            console.error('Erreur lors de la sauvegarde de l\'ordre.', error);
+          }
+        });
+      }
+    });
+  </script>
   <script>
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
